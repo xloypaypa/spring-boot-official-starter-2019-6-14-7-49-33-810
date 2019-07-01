@@ -1,10 +1,9 @@
 package com.oocl.web.sampleWebApp;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,5 +25,11 @@ public class HomeControllerTest {
     public void shouldReturnDefaultMessage() throws Exception {
         this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Hello World")));
+    }
+
+    @Test
+    public void should_return_create_status_when_add_user() throws Exception {
+        this.mockMvc.perform(post("/users").content("username")).andDo(print()).andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/users/1"));
     }
 }
